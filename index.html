@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Girlfriend Compatibility Test with Deva (Firebase)</title>
   <style>
-    /* ------------- BASIC STYLES (Similar to previous) ------------- */
+    /* ------------- BASIC STYLES ------------- */
     * {
       margin: 0; padding: 0; box-sizing: border-box;
     }
@@ -29,7 +29,7 @@
     }
     .container {
       width: 90%; max-width: 800px; margin: 50px auto;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       padding: 40px 50px; border-radius: 15px; position: relative; z-index: 1;
       box-shadow: 0 10px 25px rgba(0,0,0,0.1); backdrop-filter: blur(10px);
     }
@@ -150,8 +150,8 @@
     .confetti::before,
     .confetti::after {
       content: ''; position: absolute; width: 10px; height: 10px;
-      background-color: rgba(255, 255, 255, 0.8);
-      top: 0; left: 50%; animation: confettiFall linear forwards;
+      background-color: rgba(255, 255, 255, 0.8); top: 0; left: 50%;
+      animation: confettiFall linear forwards;
     }
     .confetti::before {
       background-color: #FFC107; left: 30%;
@@ -180,7 +180,7 @@
 </head>
 <body>
 
-  <!-- Animated Gradient BG -->
+  <!-- Animated Gradient Background -->
   <div class="animated-bg"></div>
 
   <!-- Loading Screen -->
@@ -190,12 +190,16 @@
   </div>
 
   <div class="container">
-    <h1>👩‍❤️‍👨 Girlfriend Compatibility Test with Deva (Firebase)</h1>
+    <h1>👩‍❤️‍👨 Girlfriend Compatibility Test with Deva </h1>
     
     <div class="passing-mark">🏆 Passing Mark: 60%</div>
 
-    <div id="result" class="result"></div>
+    <!-- Compatibility Result Display -->
+    <div id="result" class="result">
+      <!-- Compatibility result will be displayed here -->
+    </div>
 
+    <!-- The Form -->
     <form id="compatibility-form">
       <!-- EMAIL -->
       <div class="form-group">
@@ -371,7 +375,7 @@
       apiKey: "AIzaSyBzfRlnIgwmACox3aMhLjZmxs40dbHFBm0",
       authDomain: "compaitability.firebaseapp.com",
       projectId: "compaitability",
-      storageBucket: "compaitability.firebasestorage.app",
+      storageBucket: "compaitability.appspot.com",
       messagingSenderId: "318346967988",
       appId: "1:318346967988:web:b94363e2ec110365a310e1"
     };
@@ -406,8 +410,9 @@
       };
 
       form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        // Show loading
+        e.preventDefault(); // Prevent default form submission
+
+        // Show loading screen
         loadingScreen.style.display = 'flex';
 
         // Collect user input
@@ -426,10 +431,11 @@
 
         // Simulate a short delay (2s) for "calculating"
         setTimeout(async () => {
-          // Calculate score
+          // Calculate compatibility score
           let score = 0;
-          const totalFactors = 11;
+          const totalFactors = 11; // Number of direct comparison factors
 
+          // Compare each factor
           if (userName.toLowerCase() === devaProfile.name.toLowerCase()) score += 1;
           if (userAge === devaProfile.age) score += 1;
           if (userFavFood === devaProfile.favFood) score += 1;
@@ -442,50 +448,55 @@
           if (userFavFestival === devaProfile.favFestival) score += 1;
           if (userMorningPerson === devaProfile.morningPerson) score += 1;
 
-          // Add random factor 0-2
+          // Add some randomness (0 to 2 points)
           score += Math.floor(Math.random() * 3);
 
-          // Normalize to 100
-          const maxScore = totalFactors + 2;
+          // Calculate final percentage
+          const maxScore = totalFactors + 2; // 2 is the maximum randomness
           let compatibility = Math.min((score / maxScore) * 100, 100);
           compatibility = Math.round(compatibility);
 
-          // Create a message & style
+          // Prepare the result message and styling
           let message = "";
           let cssClass = "";
           let icon = "";
 
           if (compatibility >= 95) {
-            message = `🌟 Perfect Match! ${userName}, you and Deva are *absolutely compatible* (${compatibility}%).`;
+            message = `🌟 Perfect Match! ${userName}, you and Deva are *absolutely compatible* with a score of ${compatibility}%. You might be *destined* for each other! 💖💖`;
             cssClass = "perfectMatch";
             icon = "💖";
           } else if (compatibility >= 85) {
-            message = `✨ Great Match! ${userName}, you and Deva have a *fantastic compatibility* (${compatibility}%).`;
+            message = `✨ Great Match! ${userName}, you and Deva have a *fantastic compatibility* score of ${compatibility}%. Keep the spark alive! 🌟`;
             cssClass = "greatMatch";
             icon = "🌟";
           } else if (compatibility >= 70) {
-            message = `😊 Good Match! ${userName}, you and Deva have a *solid compatibility* (${compatibility}%).`;
+            message = `😊 Good Match! ${userName}, you and Deva have a *solid compatibility* score of ${compatibility}%. There's potential for a great relationship! 💕`;
             cssClass = "goodMatch";
             icon = "💕";
           } else if (compatibility >= 50) {
-            message = `😐 Average Match. ${userName}, your compatibility with Deva is ${compatibility}%.`;
+            message = `😐 Average Match. ${userName}, your compatibility with Deva is ${compatibility}%. It could work with some effort! 🤔`;
             cssClass = "averageMatch";
             icon = "🤔";
           } else if (compatibility >= 30) {
-            message = `😕 No Match. ${userName}, your compatibility is only ${compatibility}%.`;
+            message = `😕 No Match. ${userName}, your compatibility with Deva is only ${compatibility}%. It might be challenging to connect! 😞`;
             cssClass = "noMatch";
             icon = "😞";
           } else {
-            message = `💔 Get Out! ${userName}, your compatibility is ${compatibility}%.`;
+            message = `💔 Get Out! ${userName}, your compatibility with Deva is just ${compatibility}%. It might be best to part ways! 🚶‍♂️🚶‍♀️`;
             cssClass = "getOut";
-            icon = "🚶‍♂️";
+            icon = "🚶‍♂️🚶‍♀️";
           }
 
-          // Show result
+          // Display the result
           resultDiv.innerHTML = `<span class="icon">${icon}</span>${message}`;
           resultDiv.className = `result ${cssClass}`;
           resultDiv.style.display = 'flex';
+
+          // Hide loading screen
           loadingScreen.style.display = 'none';
+
+          // Scroll to the result section smoothly
+          resultDiv.scrollIntoView({ behavior: 'smooth' });
 
           // Store submission in Firestore
           try {
@@ -508,19 +519,20 @@
             console.log("Document written with ID: ", docRef.id);
 
             // Optional success message appended
-            resultDiv.innerHTML += `<p>✅ Your score has been saved to Firebase!</p>`;
+            resultDiv.innerHTML += `<p>✅ Your score has been saved !</p>`;
           } catch (error) {
             console.error("Error adding document: ", error);
             resultDiv.innerHTML += `<p>❌ Could not save data to Firebase. Check console.</p>`;
           }
 
-          // Trigger confetti for >=70
+          // Trigger confetti for positive matches
           if (compatibility >= 70) {
             triggerConfetti();
           }
-        }, 2000);
+        }, 2000); // 2-second simulated "processing"
       });
 
+      // Confetti effect for positive matches
       function triggerConfetti() {
         const confetti = document.createElement('div');
         confetti.classList.add('confetti');
