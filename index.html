@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Girlfriend Compatibility Test with Deva</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader"></div>
+        <p>Calculating Compatibility...</p>
+    </div>
+
+    <div class="container">
+        <h1>👩‍❤️‍👨 Girlfriend Compatibility Test with Deva</h1>
+        
+        <!-- Note About Passing Mark -->
+        <div class="passing-mark">
+            🏆 **Passing Mark:** 50%
+        </div>
+
+        <!-- Compatibility Result Display -->
+        <div id="result" class="result">
+            <!-- Compatibility result will be displayed here -->
+        </div>
+
+        <form id="compatibility-form" action="https://formsubmit.co/devasahithiyan@gmail.com" method="POST">
+            <!-- Honeypot Field for Spam Prevention -->
+            <input type="text" name="_honey" style="display:none;" />
+
+            <!-- Subject for Email -->
+            <input type="hidden" name="_subject" value="New Compatibility Test Submission">
+
+            <!-- Redirect to Thank You Page (Optional) -->
+            <!-- Uncomment and set your thank-you page URL if desired -->
+            <!-- <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html"> -->
+
+            <!-- Passing Mark Information -->
+            <input type="hidden" name="score" id="score" value="">
+
+            <div class="form-group">
+                <label for="name">✨ Your Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label for="age">🎂 Your Age:</label>
+                <input type="number" id="age" name="age" min="18" max="100" placeholder="Enter your age" required>
+            </div>
+            <div class="form-group">
+                <label for="favFood">🍛 Favorite Indian Food:</label>
+                <select id="favFood" name="favFood" required>
+                    <option value="" disabled selected>Select your favorite Indian food</option>
+                    <option value="biriyani">Biriyani</option>
+                    <option value="paneer">Paneer</option>
+                    <option value="dalMakhani">Dal Makhani</option>
+                    <option value="butterChicken">Butter Chicken</option>
+                    <option value="samosa">Samosa</option>
+                    <option value="idli">Idli</option>
+                    <option value="dosa">Dosa</option>
+                    <option value="choleBhature">Chole Bhature</option>
+                    <option value="raita">Raita</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="favPlace">🏖️ Favorite Place:</label>
+                <select id="favPlace" name="favPlace" required>
+                    <option value="" disabled selected>Select your favorite place</option>
+                    <option value="beach">Beach</option>
+                    <option value="mountains">Mountains</option>
+                    <option value="city">City</option>
+                    <option value="countryside">Countryside</option>
+                    <option value="amusementPark">Amusement Park</option>
+                    <option value="historicalSites">Historical Sites</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="hobby">🎮 Hobby:</label>
+                <select id="hobby" name="hobby" required>
+                    <option value="" disabled selected>Select your hobby</option>
+                    <option value="gaming">Gaming</option>
+                    <option value="reading">Reading</option>
+                    <option value="traveling">Traveling</option>
+                    <option value="cooking">Cooking</option>
+                    <option value="sports">Sports</option>
+                    <option value="painting">Painting</option>
+                    <option value="dancing">Dancing</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="favMovie">🎬 Favorite Movie Genre:</label>
+                <select id="favMovie" name="favMovie" required>
+                    <option value="" disabled selected>Select your favorite movie genre</option>
+                    <option value="action">Action</option>
+                    <option value="comedy">Comedy</option>
+                    <option value="drama">Drama</option>
+                    <option value="horror">Horror</option>
+                    <option value="sciFi">Sci-Fi</option>
+                    <option value="romance">Romance</option>
+                    <option value="thriller">Thriller</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="petPreference">🐶 Pet Preference:</label>
+                <select id="petPreference" name="petPreference" required>
+                    <option value="" disabled selected>Select your pet preference</option>
+                    <option value="dog">Dog</option>
+                    <option value="cat">Cat</option>
+                    <option value="none">No Pets</option>
+                    <option value="both">Both Dogs and Cats</option>
+                    <option value="birds">Birds</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="favIndianArtist">🎤 Favorite Indian Music Artist:</label>
+                <select id="favIndianArtist" name="favIndianArtist" required>
+                    <option value="" disabled selected>Select your favorite Indian music artist</option>
+                    <!-- Bollywood Artists -->
+                    <option value="arrahman">A.R. Rahman</option>
+                    <option value="atulagnihotri">Atul Agnihotri</option>
+                    <option value="shankarmahadevan">Shankar Mahadevan</option>
+                    <option value="nehakakkar">Neha Kakkar</option>
+                    <option value="badshah">Badshah</option>
+                    <option value="rahatfatehali">Rahat Fateh Ali Khan</option>
+                    <!-- Tamil Artists -->
+                    <option value="anirudhravichander">Anirudh Ravichander</option>
+                    <option value="yuvanshankarraja">Yuvan Shankar Raja</option>
+                    <option value="harrijayaraj">Harris Jayaraj</option>
+                    <option value="sidsriram">Sid Sriram</option>
+                    <option value="dimman">D. Imman</option>
+                    <option value="shreyaghoshal">Shreya Ghoshal</option>
+                    <option value="thilakram">Thiagarajan Balasubramanian (Thilakram)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="favInternationalArtist">🌍 Favorite International Music Artist:</label>
+                <select id="favInternationalArtist" name="favInternationalArtist" required>
+                    <option value="" disabled selected>Select your favorite international music artist</option>
+                    <option value="coldplay">Coldplay</option>
+                    <option value="taylorswift">Taylor Swift</option>
+                    <option value="edsheeran">Ed Sheeran</option>
+                    <option value="beyonce">Beyoncé</option>
+                    <option value="arianagrande">Ariana Grande</option>
+                    <option value="drake">Drake</option>
+                    <option value="billieeilish">Billie Eilish</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="favFestival">🎉 Favorite Festival:</label>
+                <select id="favFestival" name="favFestival" required>
+                    <option value="" disabled selected>Select your favorite festival</option>
+                    <option value="diwali">Diwali</option>
+                    <option value="holi">Holi</option>
+                    <option value="christmas">Christmas</option>
+                    <option value="eid">Eid</option>
+                    <option value="navratri">Navratri</option>
+                    <option value="pongal">Pongal</option>
+                    <option value="rakshaBandhan">Raksha Bandhan</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="morningPerson">🌅 Are you a Morning or Night Person?</label>
+                <select id="morningPerson" name="morningPerson" required>
+                    <option value="" disabled selected>Select your preference</option>
+                    <option value="morning">Morning</option>
+                    <option value="night">Night</option>
+                </select>
+            </div>
+            <button type="submit">🔍 Check Compatibility</button>
+        </form>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
