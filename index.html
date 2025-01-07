@@ -1,179 +1,533 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Girlfriend Compatibility Test with Deva</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Girlfriend Compatibility Test with Deva (Firebase)</title>
+  <style>
+    /* ------------- BASIC STYLES (Similar to previous) ------------- */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f8ff;
+      margin: 0;
+      overflow-x: hidden;
+    }
+    .animated-bg {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      z-index: -1;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .container {
+      width: 90%; max-width: 800px; margin: 50px auto;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px 50px; border-radius: 15px; position: relative; z-index: 1;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1); backdrop-filter: blur(10px);
+    }
+    h1 {
+      text-align: center; color: #333; margin-bottom: 30px; font-size: 2em; position: relative;
+    }
+    h1::after {
+      content: ''; position: absolute; width: 60px; height: 6px; background-color: #4CAF50;
+      bottom: -10px; left: 50%; transform: translateX(-50%); border-radius: 3px;
+    }
+    .passing-mark {
+      text-align: center; font-size: 1.2em; color: #555; margin-bottom: 20px; padding: 10px;
+      background-color: #fff3cd; border-left: 6px solid #ffeeba; border-radius: 5px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block; color: #555; margin-bottom: 8px; font-weight: bold;
+    }
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    select {
+      width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 8px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      font-size: 1em;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="email"]:focus,
+    select:focus {
+      border-color: #4CAF50; box-shadow: 0 0 8px rgba(76, 175, 80, 0.3); outline: none;
+    }
+    button {
+      width: 100%; padding: 15px; background-color: #4CAF50; border: none; color: white;
+      font-size: 1.2em; cursor: pointer; border-radius: 8px; transition: background-color 0.3s,
+      transform 0.2s, box-shadow 0.3s; margin-top: 10px; font-weight: bold;
+    }
+    button:hover {
+      background-color: #45a049; transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    }
+    .result {
+      margin-bottom: 30px; padding: 20px; border-left: 8px solid #2196F3; display: none;
+      border-radius: 8px; font-size: 1.1em; animation: fadeIn 0.5s ease-in-out;
+      align-items: center; transition: background-color 0.5s, border-left-color 0.5s;
+    }
+    .perfectMatch, .greatMatch, .goodMatch, .averageMatch, .noMatch, .getOut {
+      display: flex;
+    }
+    .perfectMatch {
+      background-color: #d4edda; border-left-color: #28a745; color: #155724; animation: shake 0.5s;
+    }
+    .greatMatch {
+      background-color: #d4edda; border-left-color: #28a745; color: #155724; animation: tada 0.6s;
+    }
+    .goodMatch {
+      background-color: #fff3cd; border-left-color: #ffc107; color: #856404;
+    }
+    .averageMatch {
+      background-color: #fff3cd; border-left-color: #ffc107; color: #856404;
+    }
+    .noMatch {
+      background-color: #f8d7da; border-left-color: #dc3545; color: #721c24; animation: shake 0.5s;
+    }
+    .getOut {
+      background-color: #f8d7da; border-left-color: #dc3545; color: #721c24; animation: shake 0.5s;
+    }
+    .icon { font-size: 2em; margin-right: 15px; }
+    .loader {
+      border: 8px solid #f3f3f3; border-top: 8px solid #4CAF50; border-radius: 50%;
+      width: 80px; height: 80px; animation: spin 1.5s linear infinite; margin-bottom: 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }
+    }
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      10% { transform: translate(-1px, -2px) rotate(-1deg); }
+      20% { transform: translate(-3px, 0px) rotate(1deg); }
+      30% { transform: translate(3px, 2px) rotate(0deg); }
+      40% { transform: translate(1px, -1px) rotate(1deg); }
+      50% { transform: translate(-1px, 2px) rotate(-1deg); }
+      60% { transform: translate(-3px, 1px) rotate(0deg); }
+      70% { transform: translate(3px, 1px) rotate(-1deg); }
+      80% { transform: translate(-1px, -1px) rotate(1deg); }
+      90% { transform: translate(1px, 2px) rotate(0deg); }
+      100% { transform: translate(1px, -2px) rotate(-1deg); }
+    }
+    @keyframes tada {
+      0% { transform: scale(1); }
+      10% { transform: scale(0.9) rotate(-3deg); }
+      20% { transform: scale(0.9) rotate(3deg); }
+      30% { transform: scale(1.1) rotate(-3deg); }
+      40% { transform: scale(1.1) rotate(3deg); }
+      50% { transform: scale(1.1) rotate(0deg); }
+      100% { transform: scale(1); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    .loading-screen {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(240,248,255,0.95);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      z-index: 1000; display: none;
+    }
+    .confetti {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 1001;
+    }
+    @keyframes confettiFall {
+      0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    .confetti::before,
+    .confetti::after {
+      content: ''; position: absolute; width: 10px; height: 10px;
+      background-color: rgba(255, 255, 255, 0.8);
+      top: 0; left: 50%; animation: confettiFall linear forwards;
+    }
+    .confetti::before {
+      background-color: #FFC107; left: 30%;
+      animation-duration: 3s; animation-delay: 0s;
+    }
+    .confetti::after {
+      background-color: #28a745; left: 70%;
+      animation-duration: 3s; animation-delay: 0.5s;
+    }
+    @keyframes fadeInText {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    .loading-screen p {
+      font-size: 1.5em; color: #333; animation: fadeInText 1s ease-in-out;
+    }
+    @media (max-width: 768px) {
+      .container { padding: 30px 20px; }
+      h1 { font-size: 1.8em; }
+      .passing-mark { font-size: 1em; padding: 8px; }
+      button { font-size: 1em; padding: 12px; }
+      .result { font-size: 1em; }
+      .loader { width: 60px; height: 60px; }
+      .loading-screen p { font-size: 1.2em; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Animated Background -->
-    <div class="animated-bg"></div>
 
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="loading-screen">
-        <div class="loader"></div>
-        <p>Calculating Compatibility...</p>
-    </div>
+  <!-- Animated Gradient BG -->
+  <div class="animated-bg"></div>
 
-    <div class="container">
-        <h1>👩‍❤️‍👨 Girlfriend Compatibility Test with Deva</h1>
-        
-        <!-- Note About Passing Mark -->
-        <div class="passing-mark">
-            🏆 Passing Mark: 60%
-        </div>
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="loader"></div>
+    <p>Calculating Compatibility...</p>
+  </div>
 
-        <!-- Compatibility Result Display -->
-        <div id="result" class="result">
-            <!-- Compatibility result will be displayed here -->
-        </div>
-
-        <form id="compatibility-form" action="https://formsubmit.co/devasahithiyan@gmail.com" method="POST">
-            <!-- Honeypot Field for Spam Prevention -->
-            <input type="text" name="_honey" style="display:none;" />
-
-            <!-- Subject for Email -->
-            <input type="hidden" name="_subject" value="New Compatibility Test Submission">
-
-            <!-- Redirect to Thank You Page (Optional) -->
-            <!-- Uncomment and set your thank-you page URL if desired -->
-            <!-- <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html"> -->
-
-            <!-- Passing Mark Information -->
-            <input type="hidden" name="score" id="score" value="">
-
-            <div class="form-group">
-                <label for="name">✨ Your Name:</label>
-                <input type="text" id="name" name="name" placeholder="Enter your name" required>
-            </div>
-            <div class="form-group">
-                <label for="age">🎂 Your Age:</label>
-                <input type="number" id="age" name="age" min="18" max="100" placeholder="Enter your age" required>
-            </div>
-            <div class="form-group">
-                <label for="favFood">🍛 Favorite Indian Food:</label>
-                <select id="favFood" name="favFood" required>
-                    <option value="" disabled selected>Select your favorite Indian food</option>
-                    <option value="biriyani">Biriyani</option>
-                    <option value="paneer">Paneer</option>
-                    <option value="dalMakhani">Dal Makhani</option>
-                    <option value="butterChicken">Butter Chicken</option>
-                    <option value="samosa">Samosa</option>
-                    <option value="idli">Idli</option>
-                    <option value="dosa">Dosa</option>
-                    <option value="choleBhature">Chole Bhature</option>
-                    <option value="raita">Raita</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="favPlace">🏖️ Favorite Place:</label>
-                <select id="favPlace" name="favPlace" required>
-                    <option value="" disabled selected>Select your favorite place</option>
-                    <option value="beach">Beach</option>
-                    <option value="mountains">Mountains</option>
-                    <option value="city">City</option>
-                    <option value="countryside">Countryside</option>
-                    <option value="amusementPark">Amusement Park</option>
-                    <option value="historicalSites">Historical Sites</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="hobby">🎮 Hobby:</label>
-                <select id="hobby" name="hobby" required>
-                    <option value="" disabled selected>Select your hobby</option>
-                    <option value="gaming">Gaming</option>
-                    <option value="reading">Reading</option>
-                    <option value="traveling">Traveling</option>
-                    <option value="cooking">Cooking</option>
-                    <option value="sports">Sports</option>
-                    <option value="painting">Painting</option>
-                    <option value="dancing">Dancing</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="favMovie">🎬 Favorite Movie Genre:</label>
-                <select id="favMovie" name="favMovie" required>
-                    <option value="" disabled selected>Select your favorite movie genre</option>
-                    <option value="action">Action</option>
-                    <option value="comedy">Comedy</option>
-                    <option value="drama">Drama</option>
-                    <option value="horror">Horror</option>
-                    <option value="sciFi">Sci-Fi</option>
-                    <option value="romance">Romance</option>
-                    <option value="thriller">Thriller</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="petPreference">🐶 Pet Preference:</label>
-                <select id="petPreference" name="petPreference" required>
-                    <option value="" disabled selected>Select your pet preference</option>
-                    <option value="dog">Dog</option>
-                    <option value="cat">Cat</option>
-                    <option value="none">No Pets</option>
-                    <option value="both">Both Dogs and Cats</option>
-                    <option value="birds">Birds</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="favIndianArtist">🎤 Favorite Indian Music Artist:</label>
-                <select id="favIndianArtist" name="favIndianArtist" required>
-                    <option value="" disabled selected>Select your favorite Indian music artist</option>
-                    <!-- Bollywood Artists -->
-                    <option value="arrahman">A.R. Rahman</option>
-                    <option value="atulagnihotri">Atul Agnihotri</option>
-                    <option value="shankarmahadevan">Shankar Mahadevan</option>
-                    <option value="nehakakkar">Neha Kakkar</option>
-                    <option value="badshah">Badshah</option>
-                    <option value="rahatfatehali">Rahat Fateh Ali Khan</option>
-                    <!-- Tamil Artists -->
-                    <option value="anirudhravichander">Anirudh Ravichander</option>
-                    <option value="yuvanshankarraja">Yuvan Shankar Raja</option>
-                    <option value="harrijayaraj">Harris Jayaraj</option>
-                    <option value="sidsriram">Sid Sriram</option>
-                    <option value="dimman">D. Imman</option>
-                    <option value="shreyaghoshal">Shreya Ghoshal</option>
-                    <option value="thilakram">Thiagarajan Balasubramanian (Thilakram)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="favInternationalArtist">🌍 Favorite International Music Artist:</label>
-                <select id="favInternationalArtist" name="favInternationalArtist" required>
-                    <option value="" disabled selected>Select your favorite international music artist</option>
-                    <option value="coldplay">Coldplay</option>
-                    <option value="taylorswift">Taylor Swift</option>
-                    <option value="edsheeran">Ed Sheeran</option>
-                    <option value="beyonce">Beyoncé</option>
-                    <option value="arianagrande">Ariana Grande</option>
-                    <option value="drake">Drake</option>
-                    <option value="billieeilish">Billie Eilish</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="favFestival">🎉 Favorite Festival:</label>
-                <select id="favFestival" name="favFestival" required>
-                    <option value="" disabled selected>Select your favorite festival</option>
-                    <option value="diwali">Diwali</option>
-                    <option value="holi">Holi</option>
-                    <option value="christmas">Christmas</option>
-                    <option value="eid">Eid</option>
-                    <option value="navratri">Navratri</option>
-                    <option value="pongal">Pongal</option>
-                    <option value="rakshaBandhan">Raksha Bandhan</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="morningPerson">🌅 Are you a Morning or Night Person?</label>
-                <select id="morningPerson" name="morningPerson" required>
-                    <option value="" disabled selected>Select your preference</option>
-                    <option value="morning">Morning</option>
-                    <option value="night">Night</option>
-                </select>
-            </div>
-            <button type="submit">🔍 Check Compatibility</button>
-        </form>
-    </div>
+  <div class="container">
+    <h1>👩‍❤️‍👨 Girlfriend Compatibility Test with Deva (Firebase)</h1>
     
-    <script src="script.js"></script>
+    <div class="passing-mark">🏆 Passing Mark: 60%</div>
+
+    <div id="result" class="result"></div>
+
+    <form id="compatibility-form">
+      <!-- EMAIL -->
+      <div class="form-group">
+        <label for="email">📧 Your Email:</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required />
+      </div>
+
+      <!-- NAME -->
+      <div class="form-group">
+        <label for="name">✨ Your Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required />
+      </div>
+
+      <!-- AGE -->
+      <div class="form-group">
+        <label for="age">🎂 Your Age:</label>
+        <input type="number" id="age" name="age" min="18" max="100" placeholder="Enter your age" required />
+      </div>
+
+      <!-- FAV FOOD -->
+      <div class="form-group">
+        <label for="favFood">🍛 Favorite Indian Food:</label>
+        <select id="favFood" name="favFood" required>
+          <option value="" disabled selected>Select your favorite Indian food</option>
+          <option value="biriyani">Biriyani</option>
+          <option value="paneer">Paneer</option>
+          <option value="dalMakhani">Dal Makhani</option>
+          <option value="butterChicken">Butter Chicken</option>
+          <option value="samosa">Samosa</option>
+          <option value="idli">Idli</option>
+          <option value="dosa">Dosa</option>
+          <option value="choleBhature">Chole Bhature</option>
+          <option value="raita">Raita</option>
+        </select>
+      </div>
+
+      <!-- FAV PLACE -->
+      <div class="form-group">
+        <label for="favPlace">🏖️ Favorite Place:</label>
+        <select id="favPlace" name="favPlace" required>
+          <option value="" disabled selected>Select your favorite place</option>
+          <option value="beach">Beach</option>
+          <option value="mountains">Mountains</option>
+          <option value="city">City</option>
+          <option value="countryside">Countryside</option>
+          <option value="amusementPark">Amusement Park</option>
+          <option value="historicalSites">Historical Sites</option>
+        </select>
+      </div>
+
+      <!-- HOBBY -->
+      <div class="form-group">
+        <label for="hobby">🎮 Hobby:</label>
+        <select id="hobby" name="hobby" required>
+          <option value="" disabled selected>Select your hobby</option>
+          <option value="gaming">Gaming</option>
+          <option value="reading">Reading</option>
+          <option value="traveling">Traveling</option>
+          <option value="cooking">Cooking</option>
+          <option value="sports">Sports</option>
+          <option value="painting">Painting</option>
+          <option value="dancing">Dancing</option>
+        </select>
+      </div>
+
+      <!-- FAV MOVIE -->
+      <div class="form-group">
+        <label for="favMovie">🎬 Favorite Movie Genre:</label>
+        <select id="favMovie" name="favMovie" required>
+          <option value="" disabled selected>Select your favorite movie genre</option>
+          <option value="action">Action</option>
+          <option value="comedy">Comedy</option>
+          <option value="drama">Drama</option>
+          <option value="horror">Horror</option>
+          <option value="sciFi">Sci-Fi</option>
+          <option value="romance">Romance</option>
+          <option value="thriller">Thriller</option>
+        </select>
+      </div>
+
+      <!-- PET PREFERENCE -->
+      <div class="form-group">
+        <label for="petPreference">🐶 Pet Preference:</label>
+        <select id="petPreference" name="petPreference" required>
+          <option value="" disabled selected>Select your pet preference</option>
+          <option value="dog">Dog</option>
+          <option value="cat">Cat</option>
+          <option value="none">No Pets</option>
+          <option value="both">Both Dogs and Cats</option>
+          <option value="birds">Birds</option>
+        </select>
+      </div>
+
+      <!-- FAV INDIAN ARTIST -->
+      <div class="form-group">
+        <label for="favIndianArtist">🎤 Favorite Indian Music Artist:</label>
+        <select id="favIndianArtist" name="favIndianArtist" required>
+          <option value="" disabled selected>Select your favorite Indian music artist</option>
+          <!-- Bollywood Artists -->
+          <option value="arrahman">A.R. Rahman</option>
+          <option value="atulagnihotri">Atul Agnihotri</option>
+          <option value="shankarmahadevan">Shankar Mahadevan</option>
+          <option value="nehakakkar">Neha Kakkar</option>
+          <option value="badshah">Badshah</option>
+          <option value="rahatfatehali">Rahat Fateh Ali Khan</option>
+          <!-- Tamil Artists -->
+          <option value="anirudhravichander">Anirudh Ravichander</option>
+          <option value="yuvanshankarraja">Yuvan Shankar Raja</option>
+          <option value="harrijayaraj">Harris Jayaraj</option>
+          <option value="sidsriram">Sid Sriram</option>
+          <option value="dimman">D. Imman</option>
+          <option value="shreyaghoshal">Shreya Ghoshal</option>
+          <option value="thilakram">Thiagarajan Balasubramanian (Thilakram)</option>
+        </select>
+      </div>
+
+      <!-- FAV INTERNATIONAL ARTIST -->
+      <div class="form-group">
+        <label for="favInternationalArtist">🌍 Favorite International Music Artist:</label>
+        <select id="favInternationalArtist" name="favInternationalArtist" required>
+          <option value="" disabled selected>Select your favorite international music artist</option>
+          <option value="coldplay">Coldplay</option>
+          <option value="taylorswift">Taylor Swift</option>
+          <option value="edsheeran">Ed Sheeran</option>
+          <option value="beyonce">Beyoncé</option>
+          <option value="arianagrande">Ariana Grande</option>
+          <option value="drake">Drake</option>
+          <option value="billieeilish">Billie Eilish</option>
+        </select>
+      </div>
+
+      <!-- FAV FESTIVAL -->
+      <div class="form-group">
+        <label for="favFestival">🎉 Favorite Festival:</label>
+        <select id="favFestival" name="favFestival" required>
+          <option value="" disabled selected>Select your favorite festival</option>
+          <option value="diwali">Diwali</option>
+          <option value="holi">Holi</option>
+          <option value="christmas">Christmas</option>
+          <option value="eid">Eid</option>
+          <option value="navratri">Navratri</option>
+          <option value="pongal">Pongal</option>
+          <option value="rakshaBandhan">Raksha Bandhan</option>
+        </select>
+      </div>
+
+      <!-- MORNING PERSON -->
+      <div class="form-group">
+        <label for="morningPerson">🌅 Are you a Morning or Night Person?</label>
+        <select id="morningPerson" name="morningPerson" required>
+          <option value="" disabled selected>Select your preference</option>
+          <option value="morning">Morning</option>
+          <option value="night">Night</option>
+        </select>
+      </div>
+
+      <button type="submit">🔍 Check Compatibility</button>
+    </form>
+  </div>
+
+  <!-- ---------- Firebase & App Script (type="module") ---------- -->
+  <script type="module">
+    /************************************************************
+     1) Import Firebase & Firestore from CDN (Modular SDK)
+    *************************************************************/
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+    /************************************************************
+     2) Your Firebase Configuration
+    *************************************************************/
+    const firebaseConfig = {
+      apiKey: "AIzaSyBzfRlnIgwmACox3aMhLjZmxs40dbHFBm0",
+      authDomain: "compaitability.firebaseapp.com",
+      projectId: "compaitability",
+      storageBucket: "compaitability.firebasestorage.app",
+      messagingSenderId: "318346967988",
+      appId: "1:318346967988:web:b94363e2ec110365a310e1"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    // Initialize Firestore
+    const db = getFirestore(app);
+
+    /************************************************************
+     3) Main Logic for Compatibility Test
+    *************************************************************/
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('compatibility-form');
+      const resultDiv = document.getElementById('result');
+      const loadingScreen = document.getElementById('loading-screen');
+
+      // Deva's predefined data
+      const devaProfile = {
+        name: "Deva",
+        age: 25,
+        favFood: "biriyani",
+        favPlace: "beach",
+        hobby: "gaming",
+        favMovie: "comedy",
+        petPreference: "dog",
+        favIndianArtist: "arrahman",
+        favInternationalArtist: "coldplay",
+        favFestival: "diwali",
+        morningPerson: "morning"
+      };
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        // Show loading
+        loadingScreen.style.display = 'flex';
+
+        // Collect user input
+        const userEmail = document.getElementById('email').value.trim();
+        const userName = document.getElementById('name').value.trim();
+        const userAge = parseInt(document.getElementById('age').value.trim());
+        const userFavFood = document.getElementById('favFood').value.toLowerCase();
+        const userFavPlace = document.getElementById('favPlace').value.toLowerCase();
+        const userHobby = document.getElementById('hobby').value.toLowerCase();
+        const userFavMovie = document.getElementById('favMovie').value.toLowerCase();
+        const userPetPreference = document.getElementById('petPreference').value.toLowerCase();
+        const userFavIndianArtist = document.getElementById('favIndianArtist').value.toLowerCase();
+        const userFavInternationalArtist = document.getElementById('favInternationalArtist').value.toLowerCase();
+        const userFavFestival = document.getElementById('favFestival').value.toLowerCase();
+        const userMorningPerson = document.getElementById('morningPerson').value.toLowerCase();
+
+        // Simulate a short delay (2s) for "calculating"
+        setTimeout(async () => {
+          // Calculate score
+          let score = 0;
+          const totalFactors = 11;
+
+          if (userName.toLowerCase() === devaProfile.name.toLowerCase()) score += 1;
+          if (userAge === devaProfile.age) score += 1;
+          if (userFavFood === devaProfile.favFood) score += 1;
+          if (userFavPlace === devaProfile.favPlace) score += 1;
+          if (userHobby === devaProfile.hobby) score += 1;
+          if (userFavMovie === devaProfile.favMovie) score += 1;
+          if (userPetPreference === devaProfile.petPreference) score += 1;
+          if (userFavIndianArtist === devaProfile.favIndianArtist) score += 1;
+          if (userFavInternationalArtist === devaProfile.favInternationalArtist) score += 1;
+          if (userFavFestival === devaProfile.favFestival) score += 1;
+          if (userMorningPerson === devaProfile.morningPerson) score += 1;
+
+          // Add random factor 0-2
+          score += Math.floor(Math.random() * 3);
+
+          // Normalize to 100
+          const maxScore = totalFactors + 2;
+          let compatibility = Math.min((score / maxScore) * 100, 100);
+          compatibility = Math.round(compatibility);
+
+          // Create a message & style
+          let message = "";
+          let cssClass = "";
+          let icon = "";
+
+          if (compatibility >= 95) {
+            message = `🌟 Perfect Match! ${userName}, you and Deva are *absolutely compatible* (${compatibility}%).`;
+            cssClass = "perfectMatch";
+            icon = "💖";
+          } else if (compatibility >= 85) {
+            message = `✨ Great Match! ${userName}, you and Deva have a *fantastic compatibility* (${compatibility}%).`;
+            cssClass = "greatMatch";
+            icon = "🌟";
+          } else if (compatibility >= 70) {
+            message = `😊 Good Match! ${userName}, you and Deva have a *solid compatibility* (${compatibility}%).`;
+            cssClass = "goodMatch";
+            icon = "💕";
+          } else if (compatibility >= 50) {
+            message = `😐 Average Match. ${userName}, your compatibility with Deva is ${compatibility}%.`;
+            cssClass = "averageMatch";
+            icon = "🤔";
+          } else if (compatibility >= 30) {
+            message = `😕 No Match. ${userName}, your compatibility is only ${compatibility}%.`;
+            cssClass = "noMatch";
+            icon = "😞";
+          } else {
+            message = `💔 Get Out! ${userName}, your compatibility is ${compatibility}%.`;
+            cssClass = "getOut";
+            icon = "🚶‍♂️";
+          }
+
+          // Show result
+          resultDiv.innerHTML = `<span class="icon">${icon}</span>${message}`;
+          resultDiv.className = `result ${cssClass}`;
+          resultDiv.style.display = 'flex';
+          loadingScreen.style.display = 'none';
+
+          // Store submission in Firestore
+          try {
+            const docRef = await addDoc(collection(db, "submissions"), {
+              email: userEmail,
+              name: userName,
+              age: userAge,
+              favFood: userFavFood,
+              favPlace: userFavPlace,
+              hobby: userHobby,
+              favMovie: userFavMovie,
+              petPreference: userPetPreference,
+              favIndianArtist: userFavIndianArtist,
+              favInternationalArtist: userFavInternationalArtist,
+              favFestival: userFavFestival,
+              morningPerson: userMorningPerson,
+              compatibility: compatibility,
+              timestamp: new Date().toISOString()
+            });
+            console.log("Document written with ID: ", docRef.id);
+
+            // Optional success message appended
+            resultDiv.innerHTML += `<p>✅ Your score has been saved to Firebase!</p>`;
+          } catch (error) {
+            console.error("Error adding document: ", error);
+            resultDiv.innerHTML += `<p>❌ Could not save data to Firebase. Check console.</p>`;
+          }
+
+          // Trigger confetti for >=70
+          if (compatibility >= 70) {
+            triggerConfetti();
+          }
+        }, 2000);
+      });
+
+      function triggerConfetti() {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        document.body.appendChild(confetti);
+        setTimeout(() => { confetti.remove(); }, 3000);
+      }
+    });
+  </script>
 </body>
 </html>
